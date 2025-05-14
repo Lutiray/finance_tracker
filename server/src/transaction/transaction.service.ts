@@ -12,6 +12,10 @@ export class TransactionService {
   ) {}
 
   async create(data: Partial<Transaction>) {
+    if (typeof data.amount !== 'number') {
+      throw new Error('Transaction amount must be a number');
+    }
+
     const session = await this.transactionModel.db.startSession();
     session.startTransaction();
     try {
