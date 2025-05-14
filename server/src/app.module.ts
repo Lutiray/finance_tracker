@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { AccountModule } from './account/account.module';
 import { UserModule } from './user/user.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -18,6 +19,11 @@ import { UserModule } from './user/user.module';
       }),
       inject: [ConfigService],
     }),
+
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 5,
+    }]),
 
     AuthModule,
     TransactionModule,
