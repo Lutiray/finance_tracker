@@ -1,28 +1,74 @@
 import {
-  Controller, Post, Get, Body, Delete, Param, Req,
-  UseGuards, Query,
+  Controller,
+  Post,
+  Get,
+  Body,
+  Delete,
+  Param,
+  Req,
+  UseGuards,
+  Query,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Request } from 'express';
+import { Types } from 'mongoose';
+import { ParseObjectIdPipe } from './pipes/parse-object-id.pipe';
 
+// Interface for expansion Request
+interface AuthenticatedRequest extends Request {
+  user: {
+    userId: Types.ObjectId;
+    email: string;
+  };
+}
+
+@ApiBearerAuth()
+@ApiTags('Transaction')
 @UseGuards(JwtAuthGuard)
-@Controller('transactions')
+@Controller('transaction')
 export class TransactionController {
   constructor(private readonly service: TransactionService) {}
 
   @Post()
-  create(@Req() req, @Body() body) {
-    return this.service.create({ ...body, userId: req.user.userId });
+  @ApiOperation({ summary: 'Create new transaction' })
+  @ApiResponse({ status: 201, description: 'Transaction created' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  create(
+    @Req() req: AuthenticatedRequest,
+    @Body() dto: CreateTransactionDto
+  ) {
+    return this.service.create(dto, req.user.userId);
   }
 
   @Get()
-  findAll(@Req() req, @Query() query) {
-    return this.service.findAll(req.user.userId, query);
+  @ApiOperation({ summary: 'Get all user transactions' })
+  findAll(
+    @Req() req: AuthenticatedRequest,
+    @Query('type') type?: 'income' | 'expense',
+    @Query('categoryId') categoryId?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ) {
+    return this.service.findAll(req.user.userId, { 
+      type, 
+      categoryId, 
+      from, 
+      to 
+    });
   }
 
   @Delete(':id')
-  delete(@Req() req, @Param('id') id: string) {
-    return this.service.delete(id, req.user.userId);
+  @ApiOperation({ summary: 'Delete transaction' })
+  @ApiResponse({ status: 200, description: 'Transaction deleted' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  delete(
+    @Req() req: AuthenticatedRequest,
+    @Param('id', ParseObjectIdPipe) id: Types.ObjectId,
+  ) {
+    return this.service.delete(id.toString(), req.user.userId);
   }
 }
-
