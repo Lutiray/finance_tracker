@@ -15,7 +15,7 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Types } from 'mongoose';
-import { ParseObjectIdPipe } from './pipes/parse-object-id.pipe';
+import { ParseObjectIdPipe } from '../common/pipes/parse-object-id.pipe';
 
 // Interface for expansion Request
 interface AuthenticatedRequest extends Request {
