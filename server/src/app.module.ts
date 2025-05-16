@@ -7,6 +7,7 @@ import { TransactionModule } from './transaction/transaction.module';
 import { AccountModule } from './account/account.module';
 import { UserModule } from './user/user.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -29,9 +30,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
     TransactionModule,
     AccountModule,
     UserModule,
+    CategoryModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
 
 
 
