@@ -1,21 +1,21 @@
-import { 
-  Controller, 
-  Post, 
-  Get, 
-  Delete, 
-  Body, 
-  Param, 
-  Req, 
+import {
+  Controller,
+  Post,
+  Get,
+  Delete,
+  Body,
+  Param,
+  Req,
   UseGuards,
   HttpCode,
   HttpStatus
 } from '@nestjs/common';
-import { 
-  ApiTags, 
-  ApiBearerAuth, 
-  ApiOperation, 
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
   ApiResponse,
-  ApiParam 
+  ApiParam
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AccountService } from './account.service';
@@ -29,12 +29,12 @@ import { Currency, CurrencyValues } from 'common/enums/currency.enum';
 @Controller('accounts')
 @UseGuards(JwtAuthGuard)
 export class AccountController {
-  constructor(private readonly accountService: AccountService) {}
+  constructor(private readonly accountService: AccountService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create new account' })
-  @ApiResponse({ 
-    status: HttpStatus.CREATED, 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
     description: 'Account created',
     type: AccountResponseDto
   })
@@ -44,7 +44,7 @@ export class AccountController {
     @Body() createAccountDto: CreateAccountDto
   ): Promise<AccountResponseDto> {
     return this.accountService.createAccount(
-      req.user.userId, 
+      req.user.userId,
       createAccountDto
     );
   }
@@ -76,16 +76,16 @@ export class AccountController {
   }
 
   @Get('currencies')
-@ApiOperation({ summary: 'Get available currencies' })
-@ApiResponse({
-  status: 200,
-  description: 'List of available currencies',
-  type: [String]
-})
-getCurrencies() {
-  return {
-    currencies: CurrencyValues,
-    defaultCurrency: Currency.CZK
-  };
-}
+  @ApiOperation({ summary: 'Get available currencies' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of available currencies',
+    type: [String]
+  })
+  getCurrencies() {
+    return {
+      currencies: CurrencyValues,
+      defaultCurrency: Currency.CZK
+    };
+  }
 }

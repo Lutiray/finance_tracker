@@ -7,9 +7,9 @@ import { Account, AccountSchema } from './schemas/account.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { 
-        name: Account.name, 
-        schema: AccountSchema 
+      {
+        name: Account.name,
+        schema: AccountSchema
       }
     ])
   ],
@@ -17,4 +17,4 @@ import { Account, AccountSchema } from './schemas/account.schema';
   providers: [AccountService],
   exports: [AccountService]
 })
-export class AccountModule {}
+export class AccountModule { }

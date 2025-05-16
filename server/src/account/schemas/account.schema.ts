@@ -6,7 +6,7 @@ import { Currency, CurrencyValues } from '../../../common/enums/currency.enum';
 
 export type AccountDocument = Account & Document;
 
-@Schema({ 
+@Schema({
   timestamps: true,
   toJSON: {
     virtuals: true,
@@ -29,8 +29,8 @@ export class Account {
   @Prop({ required: true, default: 0, min: 0 })
   balance: number;
 
-  @ApiProperty({ enum: CurrencyValues})
-    @Prop({
+  @ApiProperty({ enum: CurrencyValues })
+  @Prop({
     type: String,
     enum: CurrencyValues,
     default: Currency.RUB,

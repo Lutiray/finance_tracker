@@ -1,14 +1,14 @@
-import { 
-  IsString, 
-  IsOptional, 
-  IsNumber, 
-  Min, 
+import {
+  IsString,
+  IsOptional,
+  IsNumber,
+  Min,
   IsEnum,
   IsNotEmpty
 } from 'class-validator';
-import { 
-  ApiProperty, 
-  ApiPropertyOptional 
+import {
+  ApiProperty,
+  ApiPropertyOptional
 } from '@nestjs/swagger';
 import { Currency, CurrencyValues } from '../../../common/enums/currency.enum';
 
@@ -36,7 +36,7 @@ export class CreateAccountDto {
     default: Currency.RUB,
     description: 'Account currency code'
   })
-  @IsEnum(Currency, { 
+  @IsEnum(Currency, {
     message: `Invalid currency. Valid values: ${CurrencyValues.join(', ')}`
   })
   currency: Currency;

@@ -11,10 +11,10 @@ export class AccountResponseDto {
   @ApiProperty({ example: 1000.50, description: 'Current balance' })
   balance: number;
 
-  @ApiProperty({ 
+  @ApiProperty({
     enum: CurrencyValues,
     example: 'USD',
-    description: 'Account currency' 
+    description: 'Account currency'
   })
   currency: string;
 

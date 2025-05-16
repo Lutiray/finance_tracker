@@ -1,6 +1,6 @@
-import { 
-  Injectable, 
-  NotFoundException 
+import {
+  Injectable,
+  NotFoundException
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -13,9 +13,9 @@ import { Currency, CurrencyUtils } from 'common/enums/currency.enum';
 @Injectable()
 export class AccountService {
   constructor(
-  @InjectModel(Account.name) 
-  private readonly accountModel: Model<AccountDocument>
-  ) {}
+    @InjectModel(Account.name)
+    private readonly accountModel: Model<AccountDocument>
+  ) { }
 
   async createAccount(
     userId: Types.ObjectId,
@@ -57,18 +57,18 @@ export class AccountService {
     }
   }
 
-   formatBalance(balance: number, currency: Currency): string {
-        return CurrencyUtils.formatAmount(balance, currency);
-    }
+  formatBalance(balance: number, currency: Currency): string {
+    return CurrencyUtils.formatAmount(balance, currency);
+  }
 
   private mapToDto(account: AccountDocument): AccountResponseDto {
     return {
-        id: account._id.toString(),
-        name: account.name,
-        balance: account.balance,
-        currency: account.currency as Currency,
-        createdAt: account.createdAt,
-        updatedAt: account.updatedAt
+      id: account._id.toString(),
+      name: account.name,
+      balance: account.balance,
+      currency: account.currency as Currency,
+      createdAt: account.createdAt,
+      updatedAt: account.updatedAt
     };
   }
 }
