@@ -11,15 +11,15 @@ import { SkipThrottle, Throttle } from '@nestjs/throttler';
 
 @ApiTags('Auth')
 @Controller('auth')
-@UseGuards(ThrottlerGuard) 
+@UseGuards(ThrottlerGuard)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('register')
-  @SkipThrottle() 
+  @SkipThrottle()
   @ApiOperation({ summary: 'Register new user' })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiResponse({
+    status: 201,
     description: 'User registered',
     type: TokenResponseDto
   })
@@ -31,8 +31,8 @@ export class AuthController {
   @Post('login')
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   @ApiOperation({ summary: 'Login existing user' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Token returned',
     type: TokenResponseDto
   })
@@ -45,8 +45,8 @@ export class AuthController {
   @Get('me')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get current user' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Current user data',
     type: UserDto
   })

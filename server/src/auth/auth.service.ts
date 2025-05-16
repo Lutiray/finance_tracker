@@ -1,8 +1,8 @@
-import { 
-  Injectable, 
-  UnauthorizedException, 
+import {
+  Injectable,
+  UnauthorizedException,
   ConflictException,
-  Logger 
+  Logger
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -15,10 +15,10 @@ export class AuthService {
   constructor(
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   private async generateToken(user: any) {
-    const payload = { 
+    const payload = {
       sub: user._id,
       email: user.email,
     };
@@ -36,12 +36,12 @@ export class AuthService {
       const user = await this.usersService.create(email, hashedPassword);
       const token = await this.generateToken(user);
 
-      return { 
-        token, 
-        user: { 
-          id: user._id, 
-          email: user.email 
-        } 
+      return {
+        token,
+        user: {
+          id: user._id,
+          email: user.email
+        }
       };
     } catch (error) {
       this.logger.error(`Registration failed: ${error.message}`);
@@ -62,12 +62,12 @@ export class AuthService {
       }
 
       const token = await this.generateToken(user);
-      return { 
-        token, 
-        user: { 
-          id: user._id, 
-          email: user.email 
-        } 
+      return {
+        token,
+        user: {
+          id: user._id,
+          email: user.email
+        }
       };
     } catch (error) {
       this.logger.error(`Login failed for ${email}: ${error.message}`);

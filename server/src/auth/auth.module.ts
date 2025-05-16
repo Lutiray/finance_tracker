@@ -13,8 +13,8 @@ import { JwtStrategy } from './jwt.strategy';
     UserModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     ThrottlerModule.forRoot([{
-      limit: 5,         
-      ttl: 60000,        
+      limit: 5,
+      ttl: 60000,
     }]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -29,4 +29,4 @@ import { JwtStrategy } from './jwt.strategy';
   controllers: [AuthController],
   exports: [JwtStrategy, PassportModule],
 })
-export class AuthModule {}
+export class AuthModule { }
