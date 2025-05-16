@@ -15,8 +15,8 @@ export class UpdateUserDto {
   @IsEmail()
   email?: string;
 
-  @ApiProperty({ 
-    required: false, 
+  @ApiProperty({
+    required: false,
     minLength: 6,
     maxLength: 30,
     example: 'NewPassword123!'

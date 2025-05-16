@@ -11,13 +11,13 @@ import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 @UseGuards(JwtAuthGuard, ThrottlerGuard)
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get('me')
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   @ApiOperation({ summary: 'Get current user' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Current user returned',
     type: UserDto
   })
@@ -30,8 +30,8 @@ export class UserController {
   @Patch('me')
   @Throttle({ default: { limit: 3, ttl: 60000 } })
   @ApiOperation({ summary: 'Update current user' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'User updated',
     type: UserDto
   })
