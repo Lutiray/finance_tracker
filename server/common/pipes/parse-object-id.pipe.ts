@@ -13,44 +13,21 @@ export class ParseObjectIdPipe implements PipeTransform<any, Types.ObjectId> {
   private readonly logger = new Logger(ParseObjectIdPipe.name);
 
   transform(value: any, metadata: ArgumentMetadata): Types.ObjectId {
-    // Checking for empty value
     if (!value) {
       this.logger.warn(`Empty value provided for ${metadata.data}`);
-      throw new BadRequestException(
-        `No value provided for ${metadata.data}. Expected ObjectId.`,
-      );
+      throw new BadRequestException(`No value provided for ${metadata.data}`);
     }
 
-    // Checking for string type
     if (typeof value !== 'string') {
-      this.logger.warn(
-        `Invalid type provided for ${metadata.data}: ${typeof value}`,
-      );
-      throw new BadRequestException(
-        `Invalid type for ${metadata.data}. Expected string.`,
-      );
+      this.logger.warn(`Invalid type for ${metadata.data}: ${typeof value}`);
+      throw new BadRequestException(`Invalid type for ${metadata.data}`);
     }
 
-    // ObjectId validity check
-    const isValidObjectId = Types.ObjectId.isValid(value);
-    if (!isValidObjectId) {
-      this.logger.warn(`Invalid ObjectId format for ${metadata.data}: ${value}`);
-      throw new BadRequestException(
-        `Invalid ObjectId format for ${metadata.data}. Expected 24-character hex string.`,
-      );
+    if (!Types.ObjectId.isValid(value)) {
+      this.logger.warn(`Invalid ObjectId format: ${value}`);
+      throw new BadRequestException(`Invalid ObjectId format`);
     }
 
-    // Checking the correctness of conversion (additional validation)
-    const objectId = new Types.ObjectId(value);
-    if (objectId.toString() !== value) {
-      this.logger.warn(
-        `ObjectId conversion mismatch for ${metadata.data}: ${value} → ${objectId}`,
-      );
-      throw new BadRequestException(
-        `Invalid ObjectId conversion for ${metadata.data}.`,
-      );
-    }
-
-    return objectId;
+    return new Types.ObjectId(value);
   }
 }
