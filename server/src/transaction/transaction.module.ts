@@ -16,4 +16,4 @@ import { AccountModule } from '../account/account.module';
   controllers: [TransactionController],
   exports: [TransactionService],
 })
-export class TransactionModule {}
+export class TransactionModule { }

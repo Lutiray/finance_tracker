@@ -15,7 +15,7 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Types } from 'mongoose';
-import { ParseObjectIdPipe } from '../common/pipes/parse-object-id.pipe';
+import { ParseObjectIdPipe } from '../../common/pipes/parse-object-id.pipe';
 
 // Interface for expansion Request
 interface AuthenticatedRequest extends Request {
@@ -30,7 +30,7 @@ interface AuthenticatedRequest extends Request {
 @UseGuards(JwtAuthGuard)
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly service: TransactionService) {}
+  constructor(private readonly service: TransactionService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create new transaction' })
@@ -53,11 +53,11 @@ export class TransactionController {
     @Query('from') from?: string,
     @Query('to') to?: string,
   ) {
-    return this.service.findAll(req.user.userId, { 
-      type, 
-      categoryId, 
-      from, 
-      to 
+    return this.service.findAll(req.user.userId, {
+      type,
+      categoryId,
+      from,
+      to
     });
   }
 

@@ -12,7 +12,7 @@ export class TransactionService {
   constructor(
     @InjectModel(Transaction.name) private transactionModel: Model<Transaction>,
     @InjectModel(Account.name) private accountModel: Model<Account>,
-  ) {}
+  ) { }
 
   private calculateAmount(type: 'income' | 'expense', amount: number): number {
     return type === 'income' ? amount : -amount;
@@ -92,7 +92,7 @@ export class TransactionService {
 
     if (filters?.type) query.type = filters.type;
     if (filters?.categoryId) query.categoryId = new Types.ObjectId(filters.categoryId);
-    
+
     if (filters?.from || filters?.to) {
       query.date = {};
       if (filters.from) query.date.$gte = new Date(filters.from);
