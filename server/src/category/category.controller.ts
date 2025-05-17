@@ -8,7 +8,8 @@ import {
   Req,
   UseGuards,
   HttpCode,
-  HttpStatus
+  HttpStatus,
+  Query
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -54,15 +55,25 @@ export class CategoryController {
     return this.service.findAll(req.user.userId);
   }
 
-  @Delete(':id')
-  @ApiOperation({ summary: 'Delete category' })
-  @ApiParam({ name: 'id', type: String })
-  @ApiResponse({ status: HttpStatus.NO_CONTENT })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
+  @Delete()
+  @ApiOperation({ summary: 'Delete category by ID' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'Category ID in query parameter', required: true
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Category not found or access denied'
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Invalid ID format'
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(
+    @Query('id', ParseObjectIdPipe) id: string,
     @Req() req,
-    @Param('id', ParseObjectIdPipe) id: string
   ): Promise<void> {
     await this.service.delete(id, req.user.userId);
   }
