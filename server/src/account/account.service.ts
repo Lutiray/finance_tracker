@@ -41,19 +41,22 @@ export class AccountService {
     return accounts.map(this.mapToDto);
   }
 
-  async deleteAccount(
-    userId: Types.ObjectId,
-    accountId: string
-  ): Promise<void> {
-    const result = await this.accountModel
-      .findOneAndDelete({
-        _id: new Types.ObjectId(accountId),
-        userId
-      })
+  async deleteAccount(userId: string, accountId: string): Promise<void> {
+    const result = await this.accountModel.deleteOne({
+      _id: new Types.ObjectId(accountId),
+      userId: userId
+    })
       .exec();
 
-    if (!result) {
-      throw new NotFoundException('Account not found or access denied');
+    if (result.deletedCount === 0) {
+      const accountExists = await this.accountModel.exists({
+        _id: new Types.ObjectId(accountId)
+      });
+
+      throw new NotFoundException(
+        accountExists ? 'Access denied: Account belongs to another user'
+          : 'Account not found'
+      );
     }
   }
 
