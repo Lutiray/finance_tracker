@@ -2,13 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { Types } from 'mongoose';
 
 interface JwtPayload {
-  sub: string;
+  userId: string;
   email: string;
-  iat?: number;
-  exp?: number;
 }
 
 @Injectable()
@@ -28,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayload) {
     return {
-      userId: new Types.ObjectId(payload.sub),
+      userId: payload.userId,
       email: payload.email,
     };
   }
