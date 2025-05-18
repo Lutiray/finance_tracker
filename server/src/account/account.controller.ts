@@ -8,7 +8,8 @@ import {
   Req,
   UseGuards,
   HttpCode,
-  HttpStatus
+  HttpStatus,
+  Query
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -24,9 +25,9 @@ import { AccountResponseDto } from './dto/account-response.dto';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { Currency, CurrencyValues } from 'common/enums/currency.enum';
 
-@ApiTags('Accounts')
+@ApiTags('Account')
 @ApiBearerAuth()
-@Controller('accounts')
+@Controller('account')
 @UseGuards(JwtAuthGuard)
 export class AccountController {
   constructor(private readonly accountService: AccountService) { }
@@ -62,15 +63,15 @@ export class AccountController {
     return this.accountService.getUserAccounts(req.user.userId);
   }
 
-  @Delete(':id')
+  @Delete()
   @ApiOperation({ summary: 'Delete account' })
   @ApiParam({ name: 'id', type: String, description: 'Account ID' })
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Account deleted' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Account not found' })
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteAccount(
+    @Query('id', ParseObjectIdPipe) id: string,
     @Req() req,
-    @Param('id', ParseObjectIdPipe) id: string
   ): Promise<void> {
     await this.accountService.deleteAccount(req.user.userId, id);
   }
