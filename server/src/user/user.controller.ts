@@ -23,8 +23,7 @@ export class UserController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async getMe(@Req() req) {
-    const user = await this.userService.findById(req.user.userId);
-    return this.toUserDto(user);
+    return this.userService.findById(req.user.userId);
   }
 
   @Patch('me')
