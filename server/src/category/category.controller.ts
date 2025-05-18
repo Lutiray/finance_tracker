@@ -75,6 +75,6 @@ export class CategoryController {
     @Query('id', ParseObjectIdPipe) id: string,
     @Req() req,
   ): Promise<void> {
-    await this.service.delete(id, req.user.userId);
+    await this.service.deleteCategory(id, req.user.userId);
   }
 }
