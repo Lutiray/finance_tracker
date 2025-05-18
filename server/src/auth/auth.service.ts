@@ -88,8 +88,8 @@ export class AuthService {
 
   private generateTokenResponse(user: User): TokenResponseDto {
     const payload = {
-      email: user.email,
-      userId: user._id.toString()
+      userId: user._id.toString(),
+      email: user.email
     };
 
     return {
