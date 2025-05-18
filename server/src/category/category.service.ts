@@ -18,7 +18,7 @@ export class CategoryService {
 
     private toDto(doc: CategoryDocument): CategoryResponseDto {
         return {
-            id: doc._id.toString(),
+            categoryId: doc._id.toString(),
             name: doc.name,
             type: doc.type,
             createdAt: doc.createdAt,
@@ -53,10 +53,10 @@ export class CategoryService {
         return categories.map(this.toDto);
     }
 
-    async delete(id: string, userId: string): Promise<void> {
+    async deleteCategory(categoryId: string, userId: string): Promise<void> {
         const result = await this.categoryModel
             .deleteOne({
-                _id: new Types.ObjectId(id),
+                _id: new Types.ObjectId(categoryId),
                 userId: new Types.ObjectId(userId)
             })
             .exec();

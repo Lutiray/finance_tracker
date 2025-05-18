@@ -3,7 +3,7 @@ import { CategoryType } from '../schemas/category.schema';
 
 export class CategoryResponseDto {
   @ApiProperty()
-  id: string;
+  categoryId: string;
 
   @ApiProperty()
   name: string;
