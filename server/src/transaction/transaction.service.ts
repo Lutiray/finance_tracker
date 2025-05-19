@@ -51,7 +51,7 @@ export class TransactionService {
     }
   }
 
-  async delete(id: string, userId: Types.ObjectId) {
+  async deleteTransaction(id: string, userId: Types.ObjectId) {
     const session = await this.transactionModel.db.startSession();
     session.startTransaction();
 
