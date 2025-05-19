@@ -61,14 +61,14 @@ export class TransactionController {
     });
   }
 
-  @Delete(':id')
+  @Delete()
   @ApiOperation({ summary: 'Delete transaction' })
   @ApiResponse({ status: 200, description: 'Transaction deleted' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  delete(
+  deleteTransaction(
+    @Query('id', ParseObjectIdPipe) id: string,
     @Req() req: AuthenticatedRequest,
-    @Param('id', ParseObjectIdPipe) id: Types.ObjectId,
   ) {
-    return this.service.delete(id.toString(), req.user.userId);
+    return this.service.deleteTransaction(id.toString(), req.user.userId);
   }
 }
