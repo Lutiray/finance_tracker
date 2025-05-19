@@ -15,6 +15,7 @@ import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagg
 import { Request } from 'express';
 import { Types } from 'mongoose';
 import { ParseObjectIdPipe } from '../../common/pipes/parse-object-id.pipe';
+import { TransferDto } from './dto/transfer.dto';
 
 // Interface for expansion Request
 interface AuthenticatedRequest extends Request {
@@ -79,5 +80,13 @@ export class TransactionController {
     @Query('to') to?: string
   ) {
     return this.service.getSummary(req.user.userId, { from, to });
+  }
+
+  @Post('transfer')
+  async transfer(
+    @Req() req,
+    @Body() dto: TransferDto
+  ) {
+    return this.service.transferFunds(req.user.userId, dto);
   }
 }
