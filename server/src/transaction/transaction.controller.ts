@@ -4,7 +4,6 @@ import {
   Get,
   Body,
   Delete,
-  Param,
   Req,
   UseGuards,
   Query,
@@ -70,5 +69,15 @@ export class TransactionController {
     @Req() req: AuthenticatedRequest,
   ) {
     return this.service.deleteTransaction(id.toString(), req.user.userId);
+  }
+
+  @Get('summary')
+  @ApiOperation({ summary: 'Get transaction analytics' })
+  async getSummary(
+    @Req() req,
+    @Query('from') from?: string,
+    @Query('to') to?: string
+  ) {
+    return this.service.getSummary(req.user.userId, { from, to });
   }
 }
