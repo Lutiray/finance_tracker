@@ -1,0 +1,34 @@
+.button-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.primary-button {
+  @extend .button-reset;
+  background-color: $primary-color;
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.text-button {
+  @extend .button-reset;
+  color: $primary-color;
+  background: none;
+  text-decoration: underline;
+  transition: color 0.2s;
+
+  &:hover {
+    color: darken($primary-color, 15%);
+  text-decoration: none;
+  }
+}
