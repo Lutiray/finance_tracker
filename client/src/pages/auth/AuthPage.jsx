@@ -1,81 +1,73 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { login, register } from '@/api/authApi';
 import styles from './AuthPage.module.scss';
-import logo from '../../assets/logo.svg';
+import logo from '@/assets/logo.svg';
+import Loader from '@/components/ui/Loader';
+import LoginForm from '@/components/auth/LoginForm';
+import RegisterForm from '@/components/auth/RegisterForm';
 
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [apiError, setApiError] = useState('');
     const navigate = useNavigate();
 
-    const loginSchema = yup.object().shape({
-        email: yup.string().email('Incorrect email').required('Email is required'),
-        password: yup.string().min(6, 'Minimum 6 characters').required('Password is required'),
-    });
+    const switchForm = () => {
+        setApiError('');
+        setIsLogin(!isLogin);
+    };
 
-    const registerSchema = yup.object().shape({
-        email: yup.string().email('Incorrect email').required('Email is required'),
-        password: yup.string().min(6, 'Minimum 6 characters').required('Password is required'),
-        confirmPassword: yup
-            .string()
-            .oneOf([yup.ref('password'), null], 'Passwords must match')
-            .required('Confirm password is required'),
-    });
-
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: yupResolver(isLogin ? loginSchema : registerSchema),
-    });
-
-    const onSubmit = async (data) => {
+    const handleAuthSubmit = async (data) => {
+        setIsLoading(true);
         try {
-            // Здесь будет реальный вызов API
-            console.log('Form data:', data);
+            const response = isLogin
+                ? await login(data)
+                : await register(data);
+
+            // Сохраняем токен и идем на Dashboard
+            localStorage.setItem('token', response.token);
             toast.success(isLogin ? 'Login successful!' : 'Registration successful!');
             navigate('/dashboard');
         } catch (error) {
-            toast.error(error.response?.data?.message || 'An error occurred');
+            const message = error?.response?.data?.message || 'Authentication failed';
+            setApiError(message);
+            toast.error(message);
+        } finally {
+            setIsLoading(false);
         }
-    };
-
-    const switchForm = () => {
-        reset();
-        setIsLogin(!isLogin);
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.gradientBackground}>
-                {/* Логотип и заголовок */}
                 <div className={styles.logoSection}>
                     <img src={logo} alt="Finance App Logo" className={styles.logo} />
                     <h1 className={styles.title}>Finance App</h1>
                     <p className={styles.subtitle}>Manage your money with ease</p>
                 </div>
 
-                {/* Форма авторизации */}
                 <div className={styles.formSection}>
                     <div className={styles.formContainer}>
-                        {/* Переключатель между Login/Sign Up */}
                         <div className={styles.tabs}>
                             <button
                                 className={`${styles.tab} ${isLogin ? styles.activeTab : ''}`}
                                 onClick={switchForm}
+                                disabled={isLoading}
                             >
                                 Login
                             </button>
                             <button
                                 className={`${styles.tab} ${!isLogin ? styles.activeTab : ''}`}
                                 onClick={switchForm}
+                                disabled={isLoading}
                             >
                                 Sign Up
                             </button>
                         </div>
 
-                        {/* Анимированная форма */}
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={isLogin ? 'login' : 'register'}
@@ -84,53 +76,28 @@ const AuthPage = () => {
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.3 }}
                             >
-                                <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-                                    <div className={styles.formGroup}>
-                                        <input
-                                            type="email"
-                                            className={`${styles.input} ${errors.email ? styles.errorInput : ''}`}
-                                            placeholder="Email"
-                                            {...register('email')}
-                                        />
-                                        {errors.email && (
-                                            <span className={styles.errorText}>{errors.email.message}</span>
-                                        )}
+                                {isLoading ? (
+                                    <div className={styles.loaderContainer}>
+                                        <Loader size={48} />
                                     </div>
-
-                                    <div className={styles.formGroup}>
-                                        <input
-                                            type="password"
-                                            className={`${styles.input} ${errors.password ? styles.errorInput : ''}`}
-                                            placeholder="Password"
-                                            {...register('password')}
-                                        />
-                                        {errors.password && (
-                                            <span className={styles.errorText}>{errors.password.message}</span>
-                                        )}
-                                    </div>
-
-                                    {!isLogin && (
-                                        <div className={styles.formGroup}>
-                                            <input
-                                                type="password"
-                                                className={`${styles.input} ${errors.confirmPassword ? styles.errorInput : ''}`}
-                                                placeholder="Confirm Password"
-                                                {...register('confirmPassword')}
+                                ) : (
+                                    <>
+                                        {isLogin ? (
+                                            <LoginForm
+                                                onSubmit={handleAuthSubmit}
+                                                error={apiError}
                                             />
-                                            {errors.confirmPassword && (
-                                                <span className={styles.errorText}>{errors.confirmPassword.message}</span>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    <button type="submit" className={styles.submitButton}>
-                                        {isLogin ? 'Login' : 'Sign Up'}
-                                    </button>
-                                </form>
+                                        ) : (
+                                            <RegisterForm
+                                                onSubmit={handleAuthSubmit}
+                                                error={apiError}
+                                            />
+                                        )}
+                                    </>
+                                )}
                             </motion.div>
                         </AnimatePresence>
 
-                        {/* Ссылки внизу формы */}
                         <div className={styles.footerLinks}>
                             {isLogin ? (
                                 <a href="#forgot-password" className={styles.link}>
@@ -139,7 +106,11 @@ const AuthPage = () => {
                             ) : (
                                 <p className={styles.footerText}>
                                     Already have an account?{' '}
-                                    <button onClick={switchForm} className={styles.linkButton}>
+                                    <button
+                                        onClick={switchForm}
+                                        className={styles.linkButton}
+                                        disabled={isLoading}
+                                    >
                                         Login
                                     </button>
                                 </p>
