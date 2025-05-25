@@ -4,15 +4,6 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  // css: {
-  //   preprocessorOptions: {
-  //     scss: {
-  //       additionalData: `
-  //         @import "./src/styles/variables/_colors";
-  //       `
-  //     }
-  //   }
-  // },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
