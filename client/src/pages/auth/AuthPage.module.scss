@@ -1,6 +1,6 @@
-@import '../../styles/variables/_colors';
-@import '../../styles/global/_buttons.module';
-@import '../../styles/global/_forms.module';
+@import '@/styles/variables/_colors.module';
+@import '@/styles/global/_buttons.module';
+@import '@/styles/global/_forms.module';
 
 .container {
   height: 100%;
@@ -133,7 +133,7 @@
 }
 
 .tab {
-  @extend .button-reset; // Из _buttons.module.scss
+  @extend .primary-button; // Из _buttons.module.scss
   padding: 0.75rem 2rem;
   font-size: 1rem;
   font-weight: 500;
@@ -169,6 +169,12 @@
   gap: 0.5rem;
 }
 
+.label {
+  font-size: 0.875rem;
+  color: #4a5568;
+  font-weight: 500;
+}
+
 .input {
   padding: 0.75rem 1rem;
   border: 1px solid $border-color;
@@ -192,8 +198,27 @@
   margin-top: 0.25rem;
 }
 
+.apiError {
+  color: #fff;
+  background-color: #f56565;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.checkbox {
+  margin-top: 0.25rem;
+}
+
+.checkboxLabel {
+  font-size: 0.875rem;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
 .submitButton {
-  @extend .primary-button; // Из _buttons.module.scss
+  @extend .secondary-button; // Из _buttons.module.scss
   margin-top: 1rem;
   width: 100%;
   padding: 0.875rem;
