@@ -1,46 +1,56 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import api from '../api/AxiosConfig';
+import { login as authLogin, register as authRegister, getMe } from '@/api/authApi';
+import { useNavigate } from 'react-router-dom';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
-    // Check the token when loading the application
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    const response = await api.get('/auth/me');
-                    setUser(response.data);
-                }
-            } catch (error) {
-                console.error('Auth check failed:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        checkAuth();
-    }, []);
-
-    const login = async (email, password) => {
-        const { token, user } = await authApi.login(email, password);
-        localStorage.setItem('token', token);
-        setUser(user);
-    };
-
-    const logout = () => {
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const userData = await getMe();
+          setUser(userData);
+        }
+      } catch (error) {
         localStorage.removeItem('token');
-        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
     };
+    checkAuth();
+  }, []);
 
-    return (
-        <AuthContext.Provider value={{ user, isLoading, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const login = async (email, password) => {
+    const { token, user } = await authLogin({ email, password });
+    localStorage.setItem('token', token);
+    setUser(user);
+    navigate('/dashboard');
+  };
+
+  const register = async (email, password) => {
+    const { token, user } = await authRegister({ email, password });
+    localStorage.setItem('token', token);
+    setUser(user);
+    navigate('/dashboard');
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    navigate('/auth');
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);
