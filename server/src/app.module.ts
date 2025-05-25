@@ -34,6 +34,3 @@ import { CategoryModule } from './category/category.module';
   ],
 })
 export class AppModule { }
-
-
-
