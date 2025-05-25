@@ -1,43 +1,23 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { AuthProvider, useAuth } from './context/AuthContext'
-import AuthPage from './pages/auth/AuthPage'
-//import Dashboard from './pages/Dashboard'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import './styles/index.module.scss'
-
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth()
-  return user ? children : <Navigate to="/login" replace />
-}
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from '@/context/AuthContext';
+import AuthPage from '@/pages/auth/AuthPage';
+import Dashboard from '@/pages/dashboard/Dashboard';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/index.scss';
 
 function App() {
+
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<AuthPage />} />
-          {/*<Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          /> */}
-        </Routes>
-      </Router>
       <ToastContainer position="bottom-right" />
+      <Routes>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
