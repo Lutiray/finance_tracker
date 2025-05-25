@@ -1,0 +1,63 @@
+.dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 2rem;
+  
+  h1 {
+    font-size: 2rem;
+    color: #2d3748;
+  }
+
+  p {
+    color: #718096;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+}
+
+.balanceCard {
+  grid-column: span 1;
+  background: linear-gradient(135deg, #BA76C2 0%, #6A3093 100%);
+  color: white;
+}
+
+.incomeCard {
+  background-color: #f0fff4;
+}
+
+.expenseCard {
+  background-color: #fff5f5;
+}
+
+.transactions {
+  grid-column: span 3;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .transactions {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .transactions {
+    grid-column: span 1;
+  }
+}
