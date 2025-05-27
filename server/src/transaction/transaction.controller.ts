@@ -16,6 +16,7 @@ import { Request } from 'express';
 import { Types } from 'mongoose';
 import { ParseObjectIdPipe } from '../../common/pipes/parse-object-id.pipe';
 import { TransferDto } from './dto/transfer.dto';
+import { TransactionSummaryDto, BalanceHistoryItem } from './dto/transaction-response.dto';
 
 // Interface for expansion Request
 interface AuthenticatedRequest extends Request {
@@ -73,13 +74,34 @@ export class TransactionController {
   }
 
   @Get('summary')
-  @ApiOperation({ summary: 'Get transaction analytics' })
-  async getSummary(
-    @Req() req,
-    @Query('from') from?: string,
-    @Query('to') to?: string
+  @ApiOperation({ summary: 'Get financial summary' })
+  @ApiResponse({
+    status: 200,
+    description: 'Financial summary',
+    type: TransactionSummaryDto
+  })
+  async getSummary(@Req() req: AuthenticatedRequest) {
+    return this.service.getSummary(req.user.userId);
+  }
+
+  @Get('balance-history')
+  @ApiOperation({ summary: 'Get balance history for period' })
+  @ApiResponse({
+    status: 200,
+    description: 'Balance history data',
+    type: [BalanceHistoryItem]
+  })
+  async getBalanceHistory(
+    @Req() req: AuthenticatedRequest,
+    @Query('period') period: 'week' | 'month' | 'year' = 'month'
   ) {
-    return this.service.getSummary(req.user.userId, { from, to });
+    return this.service.getBalanceHistory(req.user.userId, period);
+  }
+
+  @Get('recent')
+  @ApiOperation({ summary: 'Get recent transactions' })
+  async getRecentTransactions(@Req() req: AuthenticatedRequest) {
+    return this.service.getRecentTransactions(req.user.userId);
   }
 
   @Post('transfer')
