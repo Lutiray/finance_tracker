@@ -1,6 +1,22 @@
 $primary-color: #cb86d2;
+$primary-color-dark: #6A3093;
 $secondary-color: #5d2287;
-$text-secondary: #666;
-$border-color: #ddd;
-$error-color: #ff4444;
-$main-font: 'Roboto', sans-serif;
+$neutral-color: #718096;
+$income-color: #38a169;
+$expense-color: #e53e3e;
+$background-light: #f5f7fa;
+$border-color: #edf2f7;
+$error-color: #f56565;
+$font-color: #2d3748;
+$legend-color: #f8fafc;
+$text-secondary: #4a5568;
+$text-secondary-alt: #666;
+$white: #ffffff;
+
+$shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+$card-shadow: $shadow;
+$chart-shadow: $shadow-md;
+$form-shadow: $shadow-lg;
