@@ -1,19 +1,18 @@
-@import '@/styles/variables/_colors.module';
-@import '@/styles/global/_buttons.module';
-@import '@/styles/global/_forms.module';
+@import '@/styles/variables/_colors.module.scss';
+@import '@/styles/global/_buttons.module.scss';
+@import '@/styles/global/_forms.module.scss';
 
 .container {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  font-family: $main-font;
 }
 
 .gradientBackground {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(10deg, #cb86d2 0%, #5d2287 100%);
+  background: linear-gradient(10deg, $primary-color 0%, $secondary-color 100%);
   display: flex;
 
   @media (max-width: 768px) {
@@ -30,7 +29,7 @@
   padding: 2rem;
   position: relative;
   z-index: 2;
-  color: white;
+  color: $white;
   text-align: center;
 
   @media (max-width: 768px) {
@@ -56,7 +55,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: white;
+  color: $white;
 
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -89,7 +88,7 @@
     top: 0;
     height: 100%;
     width: 100%;
-    background: white;
+    background: $white;
     clip-path: circle(100% at 100% 50%);
     z-index: 1;
 
@@ -109,12 +108,12 @@
 }
 
 .formContainer {
-  background: white;
+  background: $white;
   border-radius: 16px;
   padding: 2.5rem;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: $form-shadow;
   position: relative;
   z-index: 2;
 
@@ -138,7 +137,7 @@
   font-size: 1rem;
   font-weight: 500;
   transition: all 0.3s ease;
-  color: $text-secondary;
+  color: $text-secondary-alt;
   position: relative;
 
   &--activeTab {
@@ -171,7 +170,7 @@
 
 .label {
   font-size: 0.875rem;
-  color: #4a5568;
+  color: $text-secondary;
   font-weight: 500;
 }
 
@@ -199,8 +198,8 @@
 }
 
 .apiError {
-  color: #fff;
-  background-color: #f56565;
+  color: $white;
+  background-color: $error-color;
   padding: 0.75rem;
   border-radius: 6px;
   margin-bottom: 1rem;
@@ -213,7 +212,7 @@
 
 .checkboxLabel {
   font-size: 0.875rem;
-  color: #4a5568;
+  color: $text-secondary;
   line-height: 1.5;
 }
 
@@ -228,11 +227,11 @@
 .footerLinks {
   margin-top: 1.5rem;
   text-align: center;
-  color: $text-secondary;
+  color: $text-secondary-alt;
 }
 
 .linkButton {
-  @extend .text-button; // Из _buttons.module.scss
+  @extend .text-button;
   color: $primary-color;
   padding: 0;
   font-size: inherit;
