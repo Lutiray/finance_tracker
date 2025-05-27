@@ -1,3 +1,5 @@
+@import '@/styles/variables/_colors.module.scss';
+
 .button-reset {
   background: none;
   border: none;
@@ -9,20 +11,20 @@
 
 .primary-button {
   @extend .button-reset;
-  color: white;
+  color:$white;
   border-radius: 8px;
   font-weight: 500;
   transition: background-color 0.3s;
 
   &:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: $form-shadow;
   }
 }
 
 .secondary-button {
   @extend .button-reset;
   background-color: $primary-color;
-  color: white;
+  color:$white;
   border-radius: 8px;
   font-weight: 500;
   transition: background-color 0.3s;
