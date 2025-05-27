@@ -8,6 +8,7 @@ import { TransactionSummaryDto } from './dto/transaction-summary.dto';
 import { TransferDto } from './dto/transfer.dto';
 import { TransferResponseDto } from './dto/transfer-response.dto';
 import { TRANSFER_CATEGORY_ID } from 'common/constants';
+import { Category } from 'src/category/schemas/category.schema';
 
 @Injectable()
 export class TransactionService {
@@ -112,7 +113,7 @@ export class TransactionService {
 
   async getSummary(
     userId: Types.ObjectId,
-    filters: { from?: string; to?: string }
+    filters: { from?: string; to?: string } = {}
   ): Promise<TransactionSummaryDto> {
     const match: any = { userId };
 
@@ -127,42 +128,129 @@ export class TransactionService {
       {
         $group: {
           _id: null,
-          totalIncome: {
+          balance: {
+            $sum: {
+              $cond: [
+                { $eq: ["$type", "income"] },
+                "$amount",
+                { $multiply: ["$amount", -1] }
+              ]
+            }
+          },
+          monthlyIncome: {
             $sum: {
               $cond: [{ $eq: ["$type", "income"] }, "$amount", 0]
             }
           },
-          totalExpenses: {
+          monthlyExpenses: {
             $sum: {
               $cond: [{ $eq: ["$type", "expense"] }, "$amount", 0]
             }
           },
-          byCategory: {
-            $push: {
-              category: "$categoryId",
-              amount: "$amount",
-              type: "$type"
-            }
-          }
+          incomeTrend: { $avg: "$amount" }, // Пример расчета тренда
+          expensesTrend: { $avg: "$amount" } // Пример расчета тренда
         }
       },
       {
         $project: {
           _id: 0,
-          totalIncome: 1,
-          totalExpenses: 1,
-          netSavings: { $subtract: ["$totalIncome", "$totalExpenses"] },
-          byCategory: 1
+          balance: 1,
+          monthlyIncome: 1,
+          monthlyExpenses: 1,
+          incomeTrend: 1,
+          expensesTrend: 1,
+          balanceTrend: { $subtract: ["$incomeTrend", "$expensesTrend"] }
         }
       }
     ]);
 
     return result[0] || {
-      totalIncome: 0,
-      totalExpenses: 0,
-      netSavings: 0,
-      byCategory: []
+      balance: 0,
+      monthlyIncome: 0,
+      monthlyExpenses: 0,
+      incomeTrend: 0,
+      expensesTrend: 0,
+      balanceTrend: 0
     };
+  }
+
+  async getBalanceHistory(
+    userId: Types.ObjectId,
+    period: 'week' | 'month' | 'year' = 'month'
+  ) {
+    const now = new Date();
+    let startDate: Date;
+
+    switch (period) {
+      case 'week':
+        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case 'year':
+        startDate = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+        break;
+      default: // month
+        startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+    }
+
+    const transactions = await this.transactionModel.aggregate([
+      {
+        $match: {
+          userId,
+          date: { $gte: startDate }
+        }
+      },
+      { $sort: { date: 1 } },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+          dailyBalance: {
+            $sum: {
+              $cond: [
+                { $eq: ["$type", "income"] },
+                "$amount",
+                { $multiply: ["$amount", -1] }
+              ]
+            }
+          },
+          date: { $first: "$date" }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          date: 1,
+          dailyBalance: 1
+        }
+      },
+      { $sort: { date: 1 } }
+    ]);
+
+    // Рассчитываем нарастающий баланс
+    let balance = 0;
+    return transactions.map(item => {
+      balance += item.dailyBalance;
+      return {
+        date: item.date,
+        balance
+      };
+    });
+  }
+
+  async getRecentTransactions(userId: Types.ObjectId, limit: number = 5) {
+    const recentTransactions = await this.transactionModel
+      .find({ userId })
+      .sort({ date: -1 })
+      .limit(limit)
+      .populate('categoryId', 'name')
+      .exec();
+
+    return recentTransactions.map(tx => ({
+      id: tx._id,
+      category: (tx.categoryId as Category)?.name || 'Uncategorized',
+      date: tx.date.toISOString().split('T')[0],
+      amount: tx.amount,
+      type: tx.type,
+    }));
   }
 
   async transferFunds(
