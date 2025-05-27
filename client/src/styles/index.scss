@@ -1,6 +1,7 @@
-@import './variables/_colors.module';
-@import './global/_buttons.module';
-@import './global/_forms.module';
+@import './variables/_colors.module.scss';
+@import './global/_buttons.module.scss';
+@import './global/_forms.module.scss';
+@import './variables/_fonts.module.scss';
 
 html, body, #root {
   margin: 0;
@@ -10,4 +11,5 @@ html, body, #root {
 
 * {
   box-sizing: border-box;
+  font-family: $main-font;
 }
