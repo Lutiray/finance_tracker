@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { Category } from 'src/category/schemas/category.schema';
 
 @Schema({ timestamps: true })
 export class Transaction extends Document {
@@ -25,7 +26,7 @@ export class Transaction extends Document {
 
   @ApiProperty({ type: String })
   @Prop({ required: true, type: Types.ObjectId, ref: 'Category' })
-  categoryId: Types.ObjectId;
+  categoryId: Category | Types.ObjectId;
 
   @ApiProperty({ type: String })
   @Prop({ required: true, type: Types.ObjectId, ref: 'Account' })
