@@ -12,15 +12,21 @@ class CategorySummary {
 }
 
 export class TransactionSummaryDto {
-  @ApiProperty()
-  totalIncome: number;
-  
-  @ApiProperty()
-  totalExpenses: number;
-  
-  @ApiProperty()
-  netSavings: number;
-  
-  @ApiProperty({ type: [CategorySummary] })
-  byCategory: CategorySummary[];
+  @ApiProperty({ description: 'Total balance' })
+  balance: number;
+
+  @ApiProperty({ description: 'Total income' })
+  monthlyIncome: number;
+
+  @ApiProperty({ description: 'Total expenses' })
+  monthlyExpenses: number;
+
+  @ApiProperty({ description: 'Income trend' })
+  incomeTrend: number;
+
+  @ApiProperty({ description: 'Expenses trend' })
+  expensesTrend: number;
+
+  @ApiProperty({ description: 'Balance trend' })
+  balanceTrend: number;
 }
