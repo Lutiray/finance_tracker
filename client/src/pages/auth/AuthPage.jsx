@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { login, register } from '@/api/authApi';
 import styles from './AuthPage.module.scss';
 import logo from '@/assets/logo.svg';
-import Loader from '@/components/ui/Loader';
+import Loader from '@/components/ui/loader/Loader';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
 
