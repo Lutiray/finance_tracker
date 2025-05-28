@@ -1,0 +1,21 @@
+@import '@/styles/variables/_colors.module';
+
+.container {
+  background: $white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: $chart-shadow;
+  margin-top: 1.5rem;
+
+  h3 {
+    font-size: 1.25rem;
+    color: $font-color;
+    margin-bottom: 1rem;
+  }
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: $neutral-color;
+}
