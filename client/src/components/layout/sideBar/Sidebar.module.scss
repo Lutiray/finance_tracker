@@ -1,0 +1,153 @@
+@import '@/styles/variables/_colors.module';
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-right: 1px solid #edf2f7;
+  width: 280px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 80px; // Для header
+  overflow-y: auto;
+}
+
+.profileSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.profilePic {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+  color: #2d3748;
+  font-weight: bold;
+}
+
+.profileName {
+  font-weight: 600;
+  color: #2d3748;
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4a5568;
+  text-align: left;
+  margin-bottom: 0.25rem;
+
+  &:hover {
+    background-color: #f8fafc;
+    color: $primary-color;
+  }
+
+  &.active {
+    background-color: lighten($primary-color, 40%);
+    color: $primary-color;
+    font-weight: 500;
+  }
+}
+
+.navIcon {
+  font-size: 1.1rem;
+  width: 24px;
+  text-align: center;
+}
+
+.navLabel {
+  font-size: 0.95rem;
+}
+
+.accountsSection {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid #edf2f7;
+}
+
+.sectionTitle {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #718096;
+  margin-bottom: 1rem;
+}
+
+.accountCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateX(4px);
+  }
+}
+
+.accountIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e9d8fd;
+  color: $primary-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.accountInfo {
+  flex: 1;
+
+  h5 {
+    font-size: 0.9rem;
+    margin: 0;
+    color: #2d3748;
+  }
+
+  p {
+    font-size: 0.8rem;
+    margin: 0;
+    color: #718096;
+  }
+}
+
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 90;
+    
+    &.mobileOpen {
+      transform: translateX(0);
+    }
+  }
+}

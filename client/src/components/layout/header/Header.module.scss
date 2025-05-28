@@ -1,0 +1,79 @@
+@import '@/styles/variables/_colors.module.scss';
+@import '@/styles/variables/_fonts.module.scss';
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 80px;
+  background-color: $primary-color;
+  box-shadow: $card-shadow;
+  z-index: 100;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 15px;
+}
+
+.logo {
+  height: 100px;
+  max-width: 100%;
+}
+
+.appName {
+  font-weight: 600;
+  color: $white;
+  font-size: 1.8rem;
+  font-style: $logo-font;
+  font-weight: 400;
+  margin-bottom: 12px;
+  white-space: nowrap;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 75px;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userName {
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: $white;
+  font-style: $logo-font;
+}
+
+.userEmail {
+  font-size: 1rem;
+  color: $white;
+  font-style: $logo-font;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem;
+    height: 60px;
+  }
+
+  .appName{
+    display: none;
+  }
+
+  .userInfo {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .userEmail {
+    font-size: 0.7rem;
+  }
+}
