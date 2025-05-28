@@ -1,0 +1,37 @@
+@import '@/styles/variables/_colors.module';
+
+.tabs {
+  display: inline-flex;
+  background: $legend-color;
+  border-radius: 8px;
+  padding: 4px;
+  
+  &.small {
+    .tab {
+      padding: 4px 12px;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.tab {
+  border: none;
+  background: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: $text-secondary;
+
+  &:hover {
+    background: $border-color;
+  }
+
+  &.active {
+    background: $white;
+    color: $font-color;
+    font-weight: 500;
+    box-shadow: $card-shadow;
+  }
+}
