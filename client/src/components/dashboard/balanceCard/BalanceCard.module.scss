@@ -1,0 +1,55 @@
+@import '@/styles/variables/_colors.module.scss';
+
+.card {
+  background: $white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: $card-shadow;
+  text-align: center;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &.large {
+    padding: 2rem;
+    
+    .value {
+      font-size: 2.25rem;
+    }
+  }
+}
+
+.title {
+  font-size: 1rem;
+  color: $neutral-color;
+  margin-bottom: 0.5rem;
+}
+
+.value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: $font-color;
+  margin-bottom: 0.5rem;
+}
+
+.trend {
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+
+  &.positive {
+    color: income-color;
+  }
+
+  &.negative {
+    color: expense-color;
+  }
+
+  &.neutral {
+    color: $neutral-color;
+  }
+}
