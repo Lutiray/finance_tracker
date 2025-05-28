@@ -1,0 +1,75 @@
+@import '@/styles/variables/_colors.module';
+
+.container {
+  background: $white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: $chart-shadow;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  h3 {
+    font-size: 1.25rem;
+    color: $font-color;
+  }
+}
+
+.viewAll {
+  color: $primary-color;
+  font-size: 0.875rem;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid $border-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+.category {
+  font-weight: 500;
+  color: $font-color;
+}
+
+.date {
+  font-size: 0.75rem;
+  color: $neutral-color;
+}
+
+.amount {
+  font-weight: 600;
+
+  &.income {
+    color: $income-color;
+  }
+
+  &.expense {
+    color: $expense-color;
+  }
+}
